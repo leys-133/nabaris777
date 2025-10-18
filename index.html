@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>نبراس - منصة التعلم الذكية المتطورة</title>
+  <meta name="description" content="نبراس - منصة التعلم الذكية المدعومة بالذكاء الاصطناعي. شرح، أمثلة، تدريب، تخطيط، شارات، مختبر برمجي، مكتبة تعليمية، تحديات يومية، إحصائيات متقدمة.">
+  <meta name="keywords" content="تعلم, ذكاء اصطناعي, نبراس, تعليم, تدريب, أمثلة, شارات, تخطيط, seven_code7, برمجة, مختبر">
+  <meta name="author" content="seven_code7">
+  <meta name="theme-color" content="#667eea">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-logo">🎓</div>
+      <div class="loading-text">نبراس</div>
+      <div class="loading-spinner"></div>
+      <div class="loading-message">جاري تحميل منصة التعلم الذكية...</div>
+    </div>
+  </div>
+
+  <!-- Notification Container -->
+  <div id="notificationContainer" class="notification-container"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo-section">
+          <div class="logo">🎓 نبراس</div>
+          <div class="tagline">منصة التعلم الذكية المدعومة بالذكاء الاصطناعي — نسخة متطورة</div>
+          <div class="tagline studio-credit">بدعم من SEVEN_CODE7 💻</div>
+        </div>
+        <div class="controls">
+          <button id="themeBtn" class="btn ghost" title="الوضع الفاتح/الداكن">
+            <i class="fas fa-moon"></i> <span>تبديل النمط</span>
+          </button>
+          <button id="clearBtn" class="btn outline" title="مسح الذاكرة">
+            <i class="fas fa-broom"></i> <span>مسح الذاكرة</span>
+          </button>
+          <button id="exportBtn" class="btn outline" title="تصدير الجلسة">
+            <i class="fas fa-download"></i> <span>تصدير</span>
+          </button>
+          <button id="settingsBtn" class="btn ghost" title="الإعدادات">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat" data-tooltip="عدد الأسئلة التي أجبت عليها">
+        <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
+        <div class="stat-content">
+          <div class="num" id="questionsCount">0</div>
+          <div class="lbl">أسئلة تم الإجابة عليها</div>
+        </div>
+      </div>
+      <div class="stat" data-tooltip="مستواك الحالي في التعلم">
+        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="stat-content">
+          <div class="num" id="learningLevel">1</div>
+          <div class="lbl">مستوى التعلم</div>
+        </div>
+      </div>
+      <div class="stat" data-tooltip="النقاط التي حصلت عليها">
+        <div class="stat-icon"><i class="fas fa-star"></i></div>
+        <div class="stat-content">
+          <div class="num" id="pointsCount">0</div>
+          <div class="lbl">النقاط المكتسبة</div>
+        </div>
+      </div>
+      <div class="stat" data-tooltip="مدة آخر استجابة من الذكاء الاصطناعي">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <div class="stat-content">
+          <div class="num" id="timer">00:00</div>
+          <div class="lbl">مدة آخر استجابة</div>
+        </div>
+      </div>
+      <div class="stat" data-tooltip="سلسلة أيام التعلم المتتالية">
+        <div class="stat-icon"><i class="fas fa-fire"></i></div>
+        <div class="stat-content">
+          <div class="num" id="streakCount">0</div>
+          <div class="lbl">سلسلة الأيام</div>
+        </div>
+      </div>
+      <div class="stat" data-tooltip="إجمالي الوقت المستغرق في التعلم">
+        <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+        <div class="stat-content">
+          <div class="num" id="totalTime">0د</div>
+          <div class="lbl">إجمالي الوقت</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <!-- Sidebar -->
+      <aside class="sidebar card">
+        <div class="section-title">
+          <i class="fas fa-compass"></i> أدوات التعلم
+        </div>
+        <nav class="menu">
+          <div class="item" onclick="switchMode('learn')" data-mode="learn">
+            <i class="fas fa-book-open"></i>
+            <span>المعلم الافتراضي</span>
+          </div>
+          <div class="item" onclick="switchMode('examples')" data-mode="examples">
+            <i class="fas fa-lightbulb"></i>
+            <span>مولد الأمثلة</span>
+          </div>
+          <div class="item" onclick="switchMode('practice')" data-mode="practice">
+            <i class="fas fa-pen"></i>
+            <span>التدريب والاختبار</span>
+          </div>
+          <div class="item" onclick="switchMode('workshop')" data-mode="workshop">
+            <i class="fas fa-flask"></i>
+            <span>ورشة العمل</span>
+          </div>
+          <div class="item" onclick="switchMode('planner')" data-mode="planner">
+            <i class="fas fa-calendar-alt"></i>
+            <span>المخطط الدراسي</span>
+          </div>
+          <div class="item" onclick="switchMode('lab')" data-mode="lab">
+            <i class="fas fa-code"></i>
+            <span>المختبر البرمجي</span>
+          </div>
+          <div class="item" onclick="switchMode('library')" data-mode="library">
+            <i class="fas fa-book"></i>
+            <span>المكتبة التعليمية</span>
+          </div>
+          <div class="item" onclick="switchMode('challenges')" data-mode="challenges">
+            <i class="fas fa-trophy"></i>
+            <span>التحديات اليومية</span>
+          </div>
+          <div class="item" onclick="switchMode('analytics')" data-mode="analytics">
+            <i class="fas fa-chart-bar"></i>
+            <span>الإحصائيات المتقدمة</span>
+          </div>
+        </nav>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+          <div class="section-subtitle">
+            <i class="fas fa-trophy"></i> تقدمك
+          </div>
+          <div class="progress-container">
+            <div class="progress">
+              <span id="progressBar" style="width:0%"></span>
+            </div>
+            <div class="progress-label">
+              <span id="progressText">0%</span>
+            </div>
+          </div>
+          <div class="badges" id="badgesContainer">
+            <span class="badge"><i class="fas fa-star"></i> المبتدئ</span>
+          </div>
+        </div>
+
+        <!-- YouTube Section -->
+        <div class="youtube-section">
+          <div class="section-title">
+            <i class="fab fa-youtube"></i> SEVEN_CODE7
+          </div>
+          <p class="hint">انضم للمحتوى التعليمي المتقدم</p>
+          <div class="tools">
+            <a class="btn yt" href="https://www.youtube.com/@SEVEN_CODE7" target="_blank">
+              <i class="fas fa-bell"></i> اشترك
+            </a>
+            <button class="btn" onclick="loadSevenCodeContent()">
+              <i class="fas fa-play"></i> استكشف المحتوى
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Chat Area -->
+      <section class="main-content card">
+        <div class="chat-header">
+          <div class="section-title" id="chatTitle">
+            <i class="fas fa-comments"></i> المعلم الافتراضي العميق
+          </div>
+          <div class="tools">
+            <button class="btn ghost" id="voiceBtn" title="التحدث بالصوت">
+              <i class="fas fa-microphone"></i>
+            </button>
+            <button class="btn ghost" id="editBtn" title="تحرير آخر رسالة">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn ghost" id="repeatBtn" title="إعادة إرسال">
+              <i class="fas fa-redo"></i>
+            </button>
+            <button class="btn ghost" id="fullscreenBtn" title="ملء الشاشة">
+              <i class="fas fa-expand"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Topic Input Area -->
+        <div id="topicInputArea" class="topic-input-area" style="display:none;">
+          <input id="topicInput" class="text" placeholder="أدخل موضوعاً..." />
+          <button class="btn" onclick="startLearning()">
+            <i class="fas fa-play"></i> ابدأ
+          </button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chatbox" id="chatMessages">
+          <div class="welcome-message">
+            <div class="welcome-icon">🎓</div>
+            <h2>مرحباً بك في نبراس!</h2>
+            <p>منصة التعلم الذكية المدعومة بالذكاء الاصطناعي</p>
+            <div class="quick-actions">
+              <button class="quick-btn" onclick="sendQuickMessage('ما هو الذكاء الاصطناعي؟')">
+                <i class="fas fa-robot"></i> ما هو الذكاء الاصطناعي؟
+              </button>
+              <button class="quick-btn" onclick="sendQuickMessage('كيف أبدأ تعلم البرمجة؟')">
+                <i class="fas fa-code"></i> كيف أبدأ تعلم البرمجة؟
+              </button>
+              <button class="quick-btn" onclick="sendQuickMessage('أريد تحدياً في الرياضيات')">
+                <i class="fas fa-calculator"></i> تحدي في الرياضيات
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing" id="typing">
+          <span>الذكاء الاصطناعي يكتب</span>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="inputbar" id="dropZone">
+          <input id="messageInput" class="text" placeholder="اكتب سؤالك..." />
+          <input id="fileInput" type="file" accept="image/*" multiple style="display:none" />
+          <div class="input-actions">
+            <button class="btn ghost icon-btn" id="uploadBtn" title="إرفاق صورة">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            <button class="btn ghost icon-btn" id="emojiBtn" title="إضافة إيموجي">
+              <i class="fas fa-smile"></i>
+            </button>
+            <button class="send" id="sendBtn">
+              <i class="fas fa-paper-plane"></i> إرسال
+            </button>
+          </div>
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+        <div class="hint">
+          <i class="fas fa-info-circle"></i> اسحب وأسقط الصور هنا. اضغط على الصورة للمعاينة.
+        </div>
+      </section>
+    </div>
+
+    <!-- Features Section -->
+    <section class="card features-section">
+      <div class="section-title">
+        <i class="fas fa-star"></i> المزايا الجديدة
+      </div>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-code"></i></div>
+          <h3>المختبر البرمجي</h3>
+          <p>اكتب وجرّب أكواد برمجية مباشرة في المتصفح مع دعم لغات متعددة</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-book"></i></div>
+          <h3>المكتبة التعليمية</h3>
+          <p>مجموعة واسعة من المقالات والدروس في مختلف المجالات</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+          <h3>التحديات اليومية</h3>
+          <p>تحديات جديدة كل يوم لتحفيزك على التعلم المستمر</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>إحصائيات متقدمة</h3>
+          <p>تتبع تقدمك بدقة مع رسوم بيانية تفاعلية</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-microphone"></i></div>
+          <h3>الإدخال الصوتي</h3>
+          <p>تحدث مع الذكاء الاصطناعي بصوتك بدلاً من الكتابة</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-moon"></i></div>
+          <h3>أوضاع متعددة</h3>
+          <p>وضع فاتح وداكن مع إمكانية تخصيص الألوان</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>🎓 نبراس</h3>
+          <p>منصة التعلم الذكية المدعومة بالذكاء الاصطناعي</p>
+          <p class="studio-credit">بدعم من SEVEN_CODE7 💻</p>
+        </div>
+        <div class="footer-section">
+          <h4>روابط سريعة</h4>
+          <ul>
+            <li><a href="#" onclick="switchMode('learn')">المعلم الافتراضي</a></li>
+            <li><a href="#" onclick="switchMode('lab')">المختبر البرمجي</a></li>
+            <li><a href="#" onclick="switchMode('library')">المكتبة التعليمية</a></li>
+            <li><a href="#" onclick="switchMode('challenges')">التحديات اليومية</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>تواصل معنا</h4>
+          <div class="social-links">
+            <a href="https://www.youtube.com/@SEVEN_CODE7" target="_blank" class="social-link">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 نبراس - جميع الحقوق محفوظة | تطوير SEVEN_CODE7</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal for Image Preview -->
+  <div class="modal" id="imageModal" onclick="closeModal()">
+    <img id="modalImage" src="" alt="معاينة الصورة" />
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+      <div class="settings-header">
+        <h2><i class="fas fa-cog"></i> الإعدادات</h2>
+        <button class="close-btn" onclick="closeSettings()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="settings-body">
+        <div class="setting-group">
+          <h3><i class="fas fa-palette"></i> المظهر</h3>
+          <div class="setting-item">
+            <label>الوضع</label>
+            <select id="themeSelect" onchange="changeTheme(this.value)">
+              <option value="light">فاتح</option>
+              <option value="dark">داكن</option>
+              <option value="auto">تلقائي</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>اللون الأساسي</label>
+            <input type="color" id="primaryColor" value="#667eea" onchange="changePrimaryColor(this.value)">
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3><i class="fas fa-font"></i> النصوص</h3>
+          <div class="setting-item">
+            <label>حجم الخط</label>
+            <select id="fontSize" onchange="changeFontSize(this.value)">
+              <option value="small">صغير</option>
+              <option value="medium" selected>متوسط</option>
+              <option value="large">كبير</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3><i class="fas fa-bell"></i> الإشعارات</h3>
+          <div class="setting-item">
+            <label>تفعيل الإشعارات</label>
+            <input type="checkbox" id="notificationsEnabled" checked onchange="toggleNotifications(this.checked)">
+          </div>
+          <div class="setting-item">
+            <label>أصوات التنبيه</label>
+            <input type="checkbox" id="soundEnabled" checked onchange="toggleSound(this.checked)">
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3><i class="fas fa-robot"></i> الذكاء الاصطناعي</h3>
+          <div class="setting-item">
+            <label>مستوى التفصيل</label>
+            <select id="detailLevel" onchange="changeDetailLevel(this.value)">
+              <option value="brief">مختصر</option>
+              <option value="medium" selected>متوسط</option>
+              <option value="detailed">مفصل</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="settings-footer">
+        <button class="btn" onclick="saveSettings()">
+          <i class="fas fa-save"></i> حفظ الإعدادات
+        </button>
+        <button class="btn outline" onclick="resetSettings()">
+          <i class="fas fa-undo"></i> إعادة تعيين
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emoji Picker -->
+  <div class="emoji-picker" id="emojiPicker" style="display:none;">
+    <div class="emoji-grid">
+      <span class="emoji-item" onclick="insertEmoji('😀')">😀</span>
+      <span class="emoji-item" onclick="insertEmoji('😃')">😃</span>
+      <span class="emoji-item" onclick="insertEmoji('😄')">😄</span>
+      <span class="emoji-item" onclick="insertEmoji('😁')">😁</span>
+      <span class="emoji-item" onclick="insertEmoji('😊')">😊</span>
+      <span class="emoji-item" onclick="insertEmoji('😍')">😍</span>
+      <span class="emoji-item" onclick="insertEmoji('🤔')">🤔</span>
+      <span class="emoji-item" onclick="insertEmoji('😎')">😎</span>
+      <span class="emoji-item" onclick="insertEmoji('👍')">👍</span>
+      <span class="emoji-item" onclick="insertEmoji('👏')">👏</span>
+      <span class="emoji-item" onclick="insertEmoji('🎉')">🎉</span>
+      <span class="emoji-item" onclick="insertEmoji('💡')">💡</span>
+      <span class="emoji-item" onclick="insertEmoji('📚')">📚</span>
+      <span class="emoji-item" onclick="insertEmoji('✨')">✨</span>
+      <span class="emoji-item" onclick="insertEmoji('🚀')">🚀</span>
+      <span class="emoji-item" onclick="insertEmoji('💻')">💻</span>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/ai.js"></script>
+  <script src="assets/js/chat.js"></script>
+  <script src="assets/js/modes.js"></script>
+  <script src="assets/js/lab.js"></script>
+  <script src="assets/js/library.js"></script>
+  <script src="assets/js/challenges.js"></script>
+  <script src="assets/js/analytics.js"></script>
+  <script src="assets/js/settings.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+
